@@ -13,8 +13,8 @@
 
 | Phase | Description | Status |
 | :--- | :--- | :--- |
-| **Phase 1** | Project setup (Next.js App Router, TypeScript, Tailwind CSS, project layout, health check) | **In Progress** |
-| **Phase 2** | Database & Prisma (Schema, multi-tenant models, relations, seed script with 120+ records) | Pending |
+| **Phase 1** | Project setup (Next.js App Router, TypeScript, Tailwind CSS, project layout, health check) | **Completed** |
+| **Phase 2** | Database & Prisma (Schema, multi-tenant models, relations, seed script with 120+ records) | **In Progress** |
 | **Phase 3** | Authentication (NextAuth, credentials provider, password hashing, session management) | Pending |
 | **Phase 4** | Multi-Tenancy & RBAC (Server-side workspace scoping, Admin/Analyst/Viewer guards, 401/403) | Pending |
 | **Phase 5** | Feedback CRUD (Single entry API, Zod validation, multi-channel support) | Pending |
