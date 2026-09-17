@@ -1,3 +1,4 @@
+
 # LOOP — Requirements Traceability & Evaluation Checklist
 
 This checklist tracks every core requirement from the internship brief to ensure 100% testable, defendable coverage for the final evaluation.
