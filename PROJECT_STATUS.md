@@ -14,10 +14,10 @@
 | Phase | Description | Status |
 | :--- | :--- | :--- |
 | **Phase 1** | Project setup (Next.js App Router, TypeScript, Tailwind CSS, project layout, health check) | **Completed** |
-| **Phase 2** | Database & Prisma (Schema, multi-tenant models, relations, seed script with 120+ records) | **In Progress** |
-| **Phase 3** | Authentication (NextAuth, credentials provider, password hashing, session management) | Pending |
-| **Phase 4** | Multi-Tenancy & RBAC (Server-side workspace scoping, Admin/Analyst/Viewer guards, 401/403) | Pending |
-| **Phase 5** | Feedback CRUD (Single entry API, Zod validation, multi-channel support) | Pending |
+| **Phase 2** | Database & Prisma (Schema, multi-tenant models, relations, migration, seed with 126 records) | **Completed** |
+| **Phase 3** | Authentication (NextAuth, credentials provider, password hashing, session management) | **Completed** |
+| **Phase 4** | Multi-Tenancy & RBAC (Server-side workspace scoping, Admin/Analyst/Viewer guards, 401/403) | **Completed** |
+| **Phase 5** | Feedback CRUD (Single entry API, Zod validation, multi-channel support) | **In Progress** |
 | **Phase 6** | CSV Import & Simulated Ingestion (Batch processing, partial failure handling, mock webhook/generator) | Pending |
 | **Phase 7** | Feedback Inbox UI (Server-side pagination, filters, status transitions, detail view) | Pending |
 | **Phase 8** | Analytics Dashboard (KPI stat cards, Recharts volume trend, sentiment breakdown, top themes) | Pending |
