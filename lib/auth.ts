@@ -3,6 +3,17 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
+function getRedactedDbTarget(): string {
+  const url = process.env.DATABASE_URL;
+  if (!url) return "NOT_SET";
+  try {
+    const parsed = new URL(url);
+    return `${parsed.protocol}//[REDACTED]@${parsed.host}${parsed.pathname}?${parsed.searchParams.toString()}`;
+  } catch {
+    return "SET (invalid URL format)";
+  }
+}
+
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
@@ -20,25 +31,49 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log("[AUTH_DIAGNOSTIC] authorize() invoked");
+        console.log("[AUTH_DIAGNOSTIC] DATABASE_URL state:", process.env.DATABASE_URL ? "EXISTS" : "MISSING");
+        console.log("[AUTH_DIAGNOSTIC] DB Target (Redacted):", getRedactedDbTarget());
+        console.log("[AUTH_DIAGNOSTIC] NEXTAUTH_SECRET state:", process.env.NEXTAUTH_SECRET ? "EXISTS" : "MISSING (using fallback)");
+        console.log("[AUTH_DIAGNOSTIC] NEXTAUTH_URL:", process.env.NEXTAUTH_URL || "NOT_SET (Vercel automatic)");
+
         if (!credentials?.email || !credentials?.password) {
+          console.log("[AUTH_DIAGNOSTIC] Result: Missing credentials input");
           return null;
         }
 
+        const targetEmail = credentials.email.toLowerCase().trim();
+        const domain = targetEmail.includes("@") ? `@${targetEmail.split("@")[1]}` : "invalid";
+        console.log(`[AUTH_DIAGNOSTIC] Querying email domain: ${domain}`);
+
         try {
           const user = await prisma.user.findUnique({
-            where: { email: credentials.email.toLowerCase().trim() },
+            where: { email: targetEmail },
             include: { workspace: true },
           });
 
-          if (!user || !user.passwordHash) {
+          if (!user) {
+            console.log("[AUTH_DIAGNOSTIC] User query result: USER_NOT_FOUND");
             return null;
           }
 
+          console.log("[AUTH_DIAGNOSTIC] User query result: USER_FOUND");
+          console.log("[AUTH_DIAGNOSTIC] Has passwordHash:", !!user.passwordHash);
+
+          if (!user.passwordHash) {
+            console.log("[AUTH_DIAGNOSTIC] Result: Missing passwordHash");
+            return null;
+          }
+
+          console.log("[AUTH_DIAGNOSTIC] Reaching bcrypt.compare()");
           const isValid = await bcrypt.compare(credentials.password, user.passwordHash);
+          console.log("[AUTH_DIAGNOSTIC] bcrypt.compare() result:", isValid ? "MATCH" : "MISMATCH");
+
           if (!isValid) {
             return null;
           }
 
+          console.log("[AUTH_DIAGNOSTIC] Authentication SUCCESSFUL");
           return {
             id: user.id,
             email: user.email,
@@ -47,8 +82,8 @@ export const authOptions: NextAuthOptions = {
             workspaceId: user.workspaceId,
             workspaceName: user.workspace?.name || "Workspace",
           };
-        } catch (err) {
-          console.error("NextAuth authorize DB connection error:", err);
+        } catch (err: any) {
+          console.error("[AUTH_DIAGNOSTIC] Prisma DB Query Error:", err?.message || err);
           return null;
         }
       },
