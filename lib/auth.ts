@@ -21,31 +21,36 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Missing email or password");
+          return null;
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email.toLowerCase().trim() },
-          include: { workspace: true },
-        });
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email.toLowerCase().trim() },
+            include: { workspace: true },
+          });
 
-        if (!user || !user.passwordHash) {
-          throw new Error("Invalid credentials");
+          if (!user || !user.passwordHash) {
+            return null;
+          }
+
+          const isValid = await bcrypt.compare(credentials.password, user.passwordHash);
+          if (!isValid) {
+            return null;
+          }
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            workspaceId: user.workspaceId,
+            workspaceName: user.workspace?.name || "Workspace",
+          };
+        } catch (err) {
+          console.error("NextAuth authorize DB connection error:", err);
+          return null;
         }
-
-        const isValid = await bcrypt.compare(credentials.password, user.passwordHash);
-        if (!isValid) {
-          throw new Error("Invalid credentials");
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          workspaceId: user.workspaceId,
-          workspaceName: user.workspace.name,
-        };
       },
     }),
   ],

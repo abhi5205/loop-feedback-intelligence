@@ -82,9 +82,9 @@ The project is fully implemented, verified, tested, and ready for internship sub
 
 | Role | Email | Password | Allowed Capabilities |
 | :--- | :--- | :--- | :--- |
-| **ADMIN** | `admin@acme.com` | `password123` | Full workspace admin, settings, member role updates, feedback CRUD |
-| **ANALYST** | `analyst@acme.com` | `password123` | Ingest feedback, re-classify, create themes, generate VoC reports |
-| **VIEWER** | `viewer@acme.com` | `password123` | Read-only analytics, inbox search, and report inspection |
+| **ADMIN** | `admin@loop.dev` | `Password123!` | Full workspace admin, settings, member role updates, feedback CRUD |
+| **ANALYST** | `analyst@loop.dev` | `Password123!` | Ingest feedback, re-classify, create themes, generate VoC reports |
+| **VIEWER** | `viewer@loop.dev` | `Password123!` | Read-only analytics, inbox search, and report inspection |
 
 ---
 

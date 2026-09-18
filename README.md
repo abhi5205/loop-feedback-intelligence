@@ -65,9 +65,9 @@ Pre-populated in the seed script (`npm run db:seed`):
 
 | Role | Email | Password | Access Rights |
 | :--- | :--- | :--- | :--- |
-| **ADMIN** | `admin@acme.com` | `password123` | Full admin rights, settings & member management |
-| **ANALYST** | `analyst@acme.com` | `password123` | Ingest feedback, re-classify, generate reports |
-| **VIEWER** | `viewer@acme.com` | `password123` | Read-only analytics & inbox access |
+| **ADMIN** | `admin@loop.dev` | `Password123!` | Full admin rights, settings & member management |
+| **ANALYST** | `analyst@loop.dev` | `Password123!` | Ingest feedback, re-classify, generate reports |
+| **VIEWER** | `viewer@loop.dev` | `Password123!` | Read-only analytics & inbox access |
 
 ---
 
