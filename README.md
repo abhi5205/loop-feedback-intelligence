@@ -84,9 +84,9 @@ cp .env.example .env
 ```
 Ensure `.env` contains your PostgreSQL credentials:
 ```env
-DATABASE_URL="postgresql://postgres:Postgres%401234@localhost:5432/loop_db?schema=public"
+DATABASE_URL="postgresql://postgres:YOUR_LOCAL_PASSWORD@localhost:5432/loop_db?schema=public"
 NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="super-secret-key-change-in-production-min-32-chars"
+NEXTAUTH_SECRET="your-32-character-secret-key-here"
 ANTHROPIC_API_KEY="" # Optional: Heuristic fallback active if omitted
 NODE_ENV="development"
 ```
