@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { requireAnalystOrAdmin } from "@/lib/rbac";
 import { classifyFeedback } from "@/lib/ai/classifier";
 import { Channel, FeedbackStatus } from "@prisma/client";
+import { broadcastToWorkspace } from "@/lib/sse";
 
 const SIMULATED_STREAM = [
   { content: "The PDF export generated an empty file when running analytics for yesterday's data.", channel: Channel.INTERCOM, name: "Marcus Brody", email: "marcus@brodycorp.com" },
@@ -72,6 +73,19 @@ export async function POST(req: NextRequest) {
       }
 
       createdItems.push(feedback);
+
+      // Broadcast to SSE-connected clients in the same workspace
+      broadcastToWorkspace(auth.workspaceId, {
+        type: "new_feedback",
+        feedback: {
+          id: feedback.id,
+          content: feedback.content,
+          sentiment: feedback.sentiment,
+          channel: feedback.channel,
+          customerName: feedback.customerName,
+          createdAt: feedback.createdAt,
+        },
+      });
     }
 
     return NextResponse.json({

@@ -19,6 +19,7 @@ import {
   Menu,
   X,
   Sparkles,
+  Settings as SettingsIcon,
 } from "lucide-react";
 import { IngestModal } from "@/components/IngestModal";
 import { CsvUploadModal } from "@/components/CsvUploadModal";
@@ -46,6 +47,7 @@ export function AppShell({ children }: AppShellProps) {
     { label: "Themes & Trends", href: "/themes", icon: Tags },
     { label: "Ask LOOP (RAG)", href: "/ask", icon: MessageSquareQuote },
     { label: "VoC Reports", href: "/reports", icon: FileBarChart2 },
+    { label: "Settings & Team", href: "/settings", icon: SettingsIcon },
   ];
 
   const handleSimulate = async () => {

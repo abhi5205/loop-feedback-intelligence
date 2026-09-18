@@ -5,7 +5,7 @@
   "description": "LOOP — AI Customer-Feedback Intelligence Platform",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",

@@ -35,6 +35,31 @@ export default function InboxPage() {
   const [themes, setThemes] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [reclassifyingId, setReclassifyingId] = useState<string | null>(null);
+  const [newFeedbackCount, setNewFeedbackCount] = useState(0);
+
+  // Connect to SSE event stream for live feedback updates
+  useEffect(() => {
+    let eventSource: EventSource | null = null;
+    try {
+      eventSource = new EventSource("/api/feedback/stream");
+      eventSource.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === "new_feedback") {
+            setNewFeedbackCount((prev) => prev + 1);
+          }
+        } catch {}
+      };
+    } catch (e) {
+      console.warn("SSE event stream connection failed:", e);
+    }
+
+    return () => {
+      if (eventSource) {
+        eventSource.close();
+      }
+    };
+  }, []);
 
   // Fetch available themes for filter
   useEffect(() => {
@@ -146,6 +171,28 @@ export default function InboxPage() {
             Showing {items.length} of {pagination.total} records
           </div>
         </div>
+
+        {/* Live Stream Real-Time Notification Banner */}
+        {newFeedbackCount > 0 && (
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-indigo-900/60 to-purple-900/60 border border-indigo-500/40 text-white flex items-center justify-between shadow-lg shadow-indigo-500/10 animate-pulse">
+            <div className="flex items-center gap-3 text-sm font-semibold">
+              <Sparkles className="w-5 h-5 text-indigo-400 animate-spin" />
+              <span>
+                {newFeedbackCount} new customer feedback {newFeedbackCount === 1 ? "signal" : "signals"} streamed in real-time!
+              </span>
+            </div>
+            <button
+              onClick={() => {
+                setNewFeedbackCount(0);
+                fetchFeedback();
+              }}
+              className="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white shadow transition flex items-center gap-1.5"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              Refresh Inbox
+            </button>
+          </div>
+        )}
 
         {/* Filter Bar */}
         <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">

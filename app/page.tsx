@@ -83,6 +83,30 @@ export default function HomePage() {
               Register New Tenant
             </Link>
           </div>
+
+          {/* Quick Demo Credentials Box for Evaluation */}
+          <div className="pt-6 max-w-xl mx-auto">
+            <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60 backdrop-blur text-left space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-indigo-400">
+                <span>🔑 Evaluation Pre-configured Accounts</span>
+                <span className="text-[10px] text-slate-400 font-mono">Password: password123</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-xs font-mono pt-1">
+                <div className="bg-slate-900/80 p-2 rounded-lg border border-slate-700/80">
+                  <span className="text-[10px] text-rose-400 block font-sans font-bold">ADMIN</span>
+                  <span className="text-slate-200">admin@acme.com</span>
+                </div>
+                <div className="bg-slate-900/80 p-2 rounded-lg border border-slate-700/80">
+                  <span className="text-[10px] text-indigo-400 block font-sans font-bold">ANALYST</span>
+                  <span className="text-slate-200">analyst@acme.com</span>
+                </div>
+                <div className="bg-slate-900/80 p-2 rounded-lg border border-slate-700/80">
+                  <span className="text-[10px] text-emerald-400 block font-sans font-bold">VIEWER</span>
+                  <span className="text-slate-200">viewer@acme.com</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
