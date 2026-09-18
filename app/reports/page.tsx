@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { AppShell } from "@/components/AppShell";
 import {
   FileBarChart2,
@@ -31,26 +31,24 @@ export default function ReportsPage() {
   const [endDate, setEndDate] = useState(today);
   const [title, setTitle] = useState("");
 
-  const fetchReports = async () => {
+  const fetchReports = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/reports");
       const data = await res.json();
       const list = data.reports || [];
       setReports(list);
-      if (list.length > 0 && !selectedReport) {
-        setSelectedReport(list[0]);
-      }
+      setSelectedReport((prev: any) => prev || list[0] || null);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchReports();
-  }, []);
+  }, [fetchReports]);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
